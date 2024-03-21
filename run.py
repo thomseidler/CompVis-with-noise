@@ -148,15 +148,15 @@ if __name__=="__main__":
             return (processed_image, label)
 
             # Apply noise
-            ds_noise = ds_test.map(preprocess_data)
-            ds_noise = ds_noise.map(noisify)
+        ds_noise = ds_test.map(preprocess_data)
+        ds_noise = ds_noise.map(noisify)
 
-            #mlflow.log_param("noise_step", noise_step)
+        #mlflow.log_param("noise_step", noise_step)
 
-            validation_subset = ds_noise.take(VALIDATION_SIZE)
+        validation_subset = ds_noise.take(VALIDATION_SIZE)
             
-            preds = model.predict(validation_subset)
+        preds = model.predict(validation_subset)
             
-            for i in range(7):
-                metric_order = pow(2,i)
-                mlflow.log_metric(f"Top{metric_order}", get_accuracy_score(preds, str_labels[:VALIDATION_SIZE], metric_order), step=noise_step)
+        for i in range(7):
+            metric_order = pow(2,i)
+            mlflow.log_metric(f"Top{metric_order}", get_accuracy_score(preds, str_labels[:VALIDATION_SIZE], metric_order), step=noise_step)
