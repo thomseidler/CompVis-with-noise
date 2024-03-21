@@ -14,6 +14,7 @@ import argparse
 
 import mantik
 import mlflow
+import mantik.mlflow
 
 class NoiseSchedule:
     def __init__(self, timesteps: int):
