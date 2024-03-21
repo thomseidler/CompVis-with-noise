@@ -1,6 +1,8 @@
 name: minimal-mantik-project
 
 entry_points:
-  main:
-    command: python run.py
+  effnet:
+    command: python run_efficientnetb0.py
+  resnet:
+    command: python run_resnet50.py
 
