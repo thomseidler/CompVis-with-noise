@@ -13,6 +13,7 @@ import numpy as np
 import argparse
 
 import mantik
+import mlflow
 
 class NoiseSchedule:
     def __init__(self, timesteps: int):
@@ -90,6 +91,9 @@ def get_accuracy_score(predicted_labels, true_str_labels, top_n):
 
 if __name__=="__main__":
 
+
+    mantik.init_tracking()
+
     # Configure hyperparameters
     IMG_SIZE = 224
     BATCH_SIZE = 64
@@ -141,13 +145,13 @@ if __name__=="__main__":
             ds_noise = ds_test.map(preprocess_data)
             ds_noise = ds_noise.map(noisify)
 
-            mlflow.log_param({"noise_step": noise_step})
-            mlflow.log_param({"image_size": IMG_SIZE})
-            mlflow.log_param({"batch_size": BATCH_SIZE})
-            mlflow.log_param({"validation_size": VALIDATION_SIZE})
-            mlflow.log_param({"weights": "imagenet"})
-            mlflow.log_param({"validation_data": "imagenette"})
-            mlflow.log_param({"model": "Resnet50"})
+            mlflow.log_param("noise_step", noise_step)
+            mlflow.log_param("image_size", IMG_SIZE)
+            mlflow.log_param("batch_size", BATCH_SIZE)
+            mlflow.log_param("validation_size", VALIDATION_SIZE)
+            mlflow.log_param("weights", "imagenet")
+            mlflow.log_param("validation_data", "imagenette")
+            mlflow.log_param("model", "Resnet50")
 
             validation_subset = ds_noise.take(VALIDATION_SIZE)
             
@@ -155,4 +159,4 @@ if __name__=="__main__":
             
             for i in range(7):
                 metric_order = pow(2,i)
-                mlflow.log_metric({f"Top{metric_order}": get_accuracy_score(preds, str_labels[:VALIDATION_SIZE], metric_order)})
+                mlflow.log_metric(f"Top{metric_order}", get_accuracy_score(preds, str_labels[:VALIDATION_SIZE], metric_order))
