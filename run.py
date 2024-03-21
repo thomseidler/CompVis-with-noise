@@ -128,6 +128,12 @@ if __name__=="__main__":
 
     noise_steps = [0, 100, 250, 500, 750, 1000, 1250, 1500, 1750, 2000, 2500, 3000, 3500, 4000, 4999]
 
+    mlflow.log_param("image_size", IMG_SIZE)
+    mlflow.log_param("batch_size", BATCH_SIZE)
+    mlflow.log_param("validation_size", VALIDATION_SIZE)
+    mlflow.log_param("weights", "imagenet")
+    mlflow.log_param("validation_data", "imagenette")
+    mlflow.log_param("model", "Resnet50")
 
     for noise_step in noise_steps:
 
@@ -141,18 +147,11 @@ if __name__=="__main__":
             processed_image = keras.applications.resnet.preprocess_input(image)
             return (processed_image, label)
 
-        with mantik.mlflow.start_run():
             # Apply noise
             ds_noise = ds_test.map(preprocess_data)
             ds_noise = ds_noise.map(noisify)
 
-            mlflow.log_param("noise_step", noise_step)
-            mlflow.log_param("image_size", IMG_SIZE)
-            mlflow.log_param("batch_size", BATCH_SIZE)
-            mlflow.log_param("validation_size", VALIDATION_SIZE)
-            mlflow.log_param("weights", "imagenet")
-            mlflow.log_param("validation_data", "imagenette")
-            mlflow.log_param("model", "Resnet50")
+            #mlflow.log_param("noise_step", noise_step)
 
             validation_subset = ds_noise.take(VALIDATION_SIZE)
             
@@ -160,4 +159,4 @@ if __name__=="__main__":
             
             for i in range(7):
                 metric_order = pow(2,i)
-                mlflow.log_metric(f"Top{metric_order}", get_accuracy_score(preds, str_labels[:VALIDATION_SIZE], metric_order))
+                mlflow.log_metric(f"Top{metric_order}", get_accuracy_score(preds, str_labels[:VALIDATION_SIZE], metric_order), step=noise_step)
