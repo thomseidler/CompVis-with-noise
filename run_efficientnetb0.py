@@ -95,6 +95,8 @@ if __name__=="__main__":
 
     mantik.init_tracking()
 
+    mlflow.autolog()
+
     # Configure hyperparameters
     IMG_SIZE = 224
     BATCH_SIZE = 64
@@ -133,7 +135,7 @@ if __name__=="__main__":
     mlflow.log_param("validation_size", VALIDATION_SIZE)
     mlflow.log_param("weights", "imagenet")
     mlflow.log_param("validation_data", "imagenette")
-    mlflow.log_param("model", "Resnet50")
+    mlflow.log_param("model", "EfficientNetV2B0")
 
     for noise_step in noise_steps:
 
