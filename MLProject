@@ -1,0 +1,6 @@
+name: minimal-mantik-project
+
+entry_points:
+  main:
+    command: python run.py
+
