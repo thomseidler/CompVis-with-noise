@@ -6,7 +6,7 @@ Scripts are intended to run on google colab without any additional requirements.
 
 # Patches
 
-Currently we use a local patch of mantik that allows to set the `env_manager=local` argument in the start submission.
+Currently we use a local patch of mantik that allows to set the `env_manager=local` argument in the run submission.
 
 # How to run
 
